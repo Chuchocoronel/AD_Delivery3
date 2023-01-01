@@ -37,8 +37,12 @@ namespace Gamekit3D
 
         System.Action schedule;
 
+        // OUR_CODE
+        private Our_Code ourCode;
+
         void Start()
         {
+            ourCode = GameObject.Find("Our_Code").GetComponent<Our_Code>();
             ResetDamage();
             m_Collider = GetComponent<Collider>();
         }
@@ -107,6 +111,14 @@ namespace Gamekit3D
             {
                 var receiver = onDamageMessageReceivers[i] as IMessageReceiver;
                 receiver.OnReceiveMessage(messageType, this, data);
+                if(messageType == MessageType.DAMAGED)
+                {
+                    ourCode.GetHitPositionByMonster(Time.time);
+                }
+                else if(messageType == MessageType.DEAD)
+                {
+                    ourCode.GetDeathPositionByLava(Time.time);
+                }
             }
         }
 
