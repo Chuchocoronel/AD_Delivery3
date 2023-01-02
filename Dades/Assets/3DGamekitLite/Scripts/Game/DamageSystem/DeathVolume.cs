@@ -23,7 +23,7 @@ namespace Gamekit3D
             {
                 if (!once)
                 {
-                    ourCode.GetDeathPositionByLava(Time.time);
+                    //ourCode.GetDeathPositionByLava(Time.time);
                     once = true;
                 }
                 StartCoroutine(Delay());

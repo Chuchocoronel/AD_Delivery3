@@ -113,11 +113,30 @@ namespace Gamekit3D
                 receiver.OnReceiveMessage(messageType, this, data);
                 if(messageType == MessageType.DAMAGED)
                 {
-                    ourCode.GetHitPositionByMonster(Time.time);
+                    switch (data.damager.ToString())
+                    {
+                        case "Spit(Clone) (Gamekit3D.Spit)":
+                            ourCode.GetHitPositionBySpit(Time.time, "Spit");
+                            break;
+                        case "AttackRoot (Gamekit3D.MeleeWeapon)":
+                            ourCode.GetHitPositionByAcid(Time.time, "Monster_Melee");
+                            break;
+
+                        default:
+                            break;
+                    }
                 }
                 else if(messageType == MessageType.DEAD)
                 {
-                    ourCode.GetDeathPositionByLava(Time.time);
+                    switch (data.damager.ToString())
+                    {
+                        case "Acid (Gamekit3D.DamageZone)":
+                            ourCode.GetDeathPosition(Time.time, "Acid");
+                            break;
+                        default:
+                            break;
+                    }
+                    
                 }
             }
         }
