@@ -48,12 +48,20 @@ namespace Gamekit3D
         public List<DeathData> deathDatas = new List<DeathData>();
         public List<DeathData> hitDatas = new List<DeathData>();
         [SerializeField]
-        public float raycastLength;
+        public float raycastLength = 1f;
+        public GameObject pathTrackerGameObject;
+        public float waitTime = 10f;
+        private RaycastHit hitt;
+        private bool canSpawnCube = true;
+        [SerializeField] private List<Vector3> v = new List<Vector3>();
+        [SerializeField] private bool showPlayerPathInGame = false;
+        [SerializeField] private TrailRenderer tr;
+
         // Start is called before the first frame update
         private void Awake()
         {
-            player = GameObject.Find("Ellen");
-            raycastLength = 10f;
+            player = GameObject.Find("Ellen_Body");
+            tr = GameObject.Find("Our_TrailPosition").GetComponent<TrailRenderer>();
         }
 
 
@@ -79,12 +87,61 @@ namespace Gamekit3D
         }
         private void Update()
         {
+            if(Input.GetKeyDown(KeyCode.E))
+            {
+                showPlayerPathInGame = !showPlayerPathInGame;
+            }
+            if(showPlayerPathInGame)
+            {
+                tr.startWidth = 0.5f;
+                tr.endWidth = 0.5f;
+            }
+            else
+            {
+                tr.startWidth = 0f;
+                tr.endWidth = 0f;
+            }
+            if(canSpawnCube)
+            {
+                StartCoroutine(Wait());
+            }
+                
+        }
+        IEnumerator Wait()
+        {
+            canSpawnCube = false;
+            yield return new WaitForSeconds(waitTime);
+            if(RaycastToGround())
+            {
+                v.Add(hitt.point);
+                Debug.DrawRay(player.transform.position, -player.transform.up * raycastLength, Color.blue, 3f);
+            }
+            canSpawnCube = true;            
+        }
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.green;
+            if(v.Count > 0)
+            {
+                for (int i = 1; i < v.Count; i++)
+                {
+                    Gizmos.DrawLine(v[i - 1], v[i]);
+                }
+            }
             
         }
-        private void RaycastToGround()
+        private bool RaycastToGround()
         {
             RaycastHit hit;
-            //if(Physics.Raycast(player.transform.position, ))
+            if(Physics.Raycast(player.transform.position, -player.transform.up, out hit, raycastLength))
+            {
+                hitt = hit;                          
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
         IEnumerator PlayerRequest(float x, float y, float z, float timer, string damagetype, string damager)
         {
