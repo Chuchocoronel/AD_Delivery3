@@ -39,10 +39,12 @@ namespace Gamekit3D
 
         // OUR_CODE
         private Our_Code ourCode;
+        private Transform player;
 
         void Start()
         {
             ourCode = GameObject.Find("Our_Code").GetComponent<Our_Code>();
+            player = GameObject.Find("Ellen").GetComponent<Transform>();
             ResetDamage();
             m_Collider = GetComponent<Collider>();
         }
@@ -116,10 +118,10 @@ namespace Gamekit3D
                     switch (data.damager.ToString())
                     {
                         case "Spit(Clone) (Gamekit3D.Spit)":
-                            ourCode.GetHitPositionBySpit(Time.time, "Spit");
+                            ourCode.GetHitPositionBySpit(player.position.x, player.position.y, player.position.z, Time.time, "Spit");
                             break;
                         case "AttackRoot (Gamekit3D.MeleeWeapon)":
-                            ourCode.GetHitPositionByAcid(Time.time, "Monster_Melee");
+                            ourCode.GetHitPositionByAcid(player.position.x, player.position.y, player.position.z, Time.time, "Monster_Melee");
                             break;
 
                         default:
@@ -131,12 +133,17 @@ namespace Gamekit3D
                     switch (data.damager.ToString())
                     {
                         case "Acid (Gamekit3D.DamageZone)":
-                            ourCode.GetDeathPosition(Time.time, "Acid");
+                            ourCode.GetDeathPosition(player.position.x, player.position.y, player.position.z, Time.time, "Acid");
+                            break;
+                        case "Spit(Clone) (Gamekit3D.Spit)":
+                            ourCode.GetDeathPosition(player.position.x, player.position.y, player.position.z, Time.time, "Spit");
+                            break;
+                        case "AttackRoot (Gamekit3D.MeleeWeapon)":
+                            ourCode.GetDeathPosition(player.position.x, player.position.y, player.position.z, Time.time, "MeleeWeapon");
                             break;
                         default:
                             break;
-                    }
-                    
+                    }                    
                 }
             }
         }
