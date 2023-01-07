@@ -1,68 +1,31 @@
 <?php
-    // //printf( "Hello world! Today is ". date("Y-m-d H:i:s"));
-    // //printf("Hola Ignasi ets bobo");
-    // $servername = "localhost";
-    // $username = "marcrp5";
-    // $password = "azqTgT2U5V";
-    // $database = "marcrp5";
+$servername = "localhost";
+$username = "marcrp5";
+$password = "azqTgT2U5V";
+$db = "marcrp5";
 
-    // //Create connection
-    // $db = new mysqli($servername, $username,$password,$database);
+// Create connection
+$conn = new mysqli($servername, $username, $password, $db);
 
-    // //Check connection
-    // if($db->connect_error)
-    // {
-    //     die("Connection failed: ". $conn->connect_error);
-    // }
-    // else
-    // {
-    //     if ($db->connect_error) {
-    //         die("Connection failed: "
-    //             . $db->connect_error);
-    //     }
-    //     printf($servername);
-
-    //     $Name = $_POST["name"];
-    //     $DateOfBirth = $_POST["dateOfBirth"];
-    //     $Country = $_POST["country"];
-
-    //     $sqlquery = "INSERT INTO Playerinfo VALUES
-    // ('".$Name"', '".$DateOfBirth"', '".$Country"')";
-    //     $result = mysqli_query($db, $sqlquery);
-    //     if ($db->query($sqlquery) === TRUE)
-    //     {
-    //         echo "\nrecord inserted successfully!\n";
-    //     } 
-    //     else
-    //     {
-    //         echo "Error: " . $sql . "<br>\n" . $db->error;
-    //     }
-    // }
-
- $servername = "localhost";
- $username = "marcrp5";
- $password = "azqTgT2U5V";
- $database = "marcrp5";
-
- $db = new mysqli($servername, $username, $password, $database);
- if($db->connection_error) {
-     die("Connection failed: " . $conn->connect_error);
+// Check connection
+if($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
 }
-$x = $_POST["x"];
-$y = $_POST["y"];
-$z = $_POST["z"];
-$timer = $_POST["timer"];
-$damagetype = $_POST["damagetype"];
-$damager = $_POST["damager"];
-$query = "INSERT INTO death
-        SET
-        x = '$x',
-        y = '$y',
-        z = '$z',
-        timer = '$timer',
-        damagetype = '$damagetype',
-        damager = '$damager'";
-$result = mysqli_query($db,$query) or die('just  died');
-$last_inserted =  $db->insert_id;
-print($last_inserted);
+echo "Connected Successfully"."<br>";
+
+$sql = "SELECT HitNum, PlayerPosX, PlayerPosY, PlayerPosZ, EnemyName, EnemyPosX, EnemyPosY, EnemyPosZ, GameTime FROM Hits";
+
+$result = $conn->query($sql);
+
+if($result->num_rows > 0)
+{
+    // Output data from each row.
+    while($row = $result->fetch_assoc()) {
+        echo "*".$row["HitNum"]."/".$row["PlayerPosX"]."/".$row["PlayerPosY"]."/".$row["PlayerPosZ"]."/".$row["EnemyName"]."/".$row["EnemyPosX"]."/".$row["EnemyPosY"]."/".$row["EnemyPosZ"]."/".$row["GameTime"];
+    }
+} else {
+    echo "0 results";
+}
+
+$conn->close();
 ?>

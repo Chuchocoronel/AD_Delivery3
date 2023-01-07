@@ -26,7 +26,7 @@ namespace Gamekit3D
         public float X;
         public float Y;
         public float Z;
-        public float Timet;
+        public float Timer;
         public string Damager;
         public string DamageType;
 
@@ -35,7 +35,7 @@ namespace Gamekit3D
             X = x;
             Y = y;
             Z = z;
-            Timet = timer;
+            Timer = timer;
             DamageType = damagetype;
             Damager = damager;
         }
@@ -47,6 +47,8 @@ namespace Gamekit3D
 
         public List<DeathData> deathDatas = new List<DeathData>();
         public List<DeathData> hitDatas = new List<DeathData>();
+        
+        [SerializeField] private string[] downloadedString;
         [SerializeField]
         public float raycastLength = 1f;
         public GameObject pathTrackerGameObject;
@@ -56,6 +58,10 @@ namespace Gamekit3D
         [SerializeField] private List<Vector3> v = new List<Vector3>();
         [SerializeField] private bool showPlayerPathInGame = false;
         [SerializeField] private TrailRenderer tr;
+        [SerializeField] private string[] user;
+        [SerializeField] private string rawresponse;
+        [SerializeField] private DeathData[] oriolLaXupes;
+        
 
         // Start is called before the first frame update
         private void Awake()
@@ -63,8 +69,6 @@ namespace Gamekit3D
             player = GameObject.Find("Ellen_Body");
             tr = GameObject.Find("Our_TrailPosition").GetComponent<TrailRenderer>();
         }
-
-
         public void GetDeathPositionByMonster(float x, float y, float z, float timer, string damagetype, string damager)
         {
             deathDatas.Add(new DeathData(x,y,z,timer, damagetype, damager));
@@ -104,6 +108,10 @@ namespace Gamekit3D
             if(canSpawnCube)
             {
                 StartCoroutine(Wait());
+            }
+            if(Input.GetKeyDown(KeyCode.L))
+            {
+                StartCoroutine(GetInfo());
             }
                 
         }
@@ -176,6 +184,34 @@ namespace Gamekit3D
                         Debug.Log("Reached Succes!");
 
                         break;
+                }
+            }
+        }
+
+        IEnumerator GetInfo()
+        {
+            using(UnityWebRequest req = UnityWebRequest.Get("https://citmalumnes.upc.es/~marcrp5/GetInfo.php"))
+            {
+                yield return req.SendWebRequest();
+                if (req.result == UnityWebRequest.Result.ConnectionError)
+                    Debug.Log("Error: " + req.error);
+                else
+                {
+                    rawresponse = req.downloadHandler.text;
+                    user = rawresponse.Split("*");
+                    Debug.Log("This is user length" + user.Length);
+                    for (int i = 0; i < user.Length; i++)
+                    {
+                        downloadedString = user[i].Split("/");
+
+                        oriolLaXupes = new DeathData[downloadedString.Length];
+                        oriolLaXupes[i].X = float.Parse(downloadedString[0].Replace(".", ","));
+                        oriolLaXupes[i].Y = float.Parse(downloadedString[1].Replace(".", ","));
+                        oriolLaXupes[i].Z = float.Parse(downloadedString[2].Replace(".", ","));
+                        oriolLaXupes[i].Timer = float.Parse(downloadedString[3].Replace(".", ","));
+                        oriolLaXupes[i].DamageType = (downloadedString[4]);
+                        oriolLaXupes[i].Damager = (downloadedString[5]);
+                    }                    
                 }
             }
         }
