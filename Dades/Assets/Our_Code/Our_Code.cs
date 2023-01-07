@@ -7,6 +7,7 @@ using UnityEngine.Serialization;
 using System;
 using UnityEngine.Networking;
 using Cinemachine.Utility;
+using Unity.VisualScripting;
 
 namespace Gamekit3D
 {
@@ -27,13 +28,15 @@ namespace Gamekit3D
         public float Z;
         public float Timet;
         public string Damager;
+        public string DamageType;
 
-        public DeathData(float x, float y, float z, float timer, string damager)
+        public DeathData(float x, float y, float z, float timer, string damagetype, string damager)
         {
             X = x;
             Y = y;
             Z = z;
             Timet = timer;
+            DamageType = damagetype;
             Damager = damager;
         }
     }
@@ -45,34 +48,45 @@ namespace Gamekit3D
         public List<DeathData> deathDatas = new List<DeathData>();
         public List<DeathData> hitDatas = new List<DeathData>();
         [SerializeField]
+        public float raycastLength;
         // Start is called before the first frame update
         private void Awake()
         {
             player = GameObject.Find("Ellen");
+            raycastLength = 10f;
         }
 
 
-        public void GetDeathPositionByMonster(float x, float y, float z, float timer, string damager)
+        public void GetDeathPositionByMonster(float x, float y, float z, float timer, string damagetype, string damager)
         {
-            deathDatas.Add(new DeathData(x,y,z,timer, damager));
-            StartCoroutine(PlayerRequest(x, y, z, timer, damager));
+            deathDatas.Add(new DeathData(x,y,z,timer, damagetype, damager));
+            StartCoroutine(PlayerRequest(x, y, z, timer, damagetype, damager));
         }
-        public void GetDeathPosition(float x, float y, float z, float timer, string damager)
+        public void GetDeathPosition(float x, float y, float z, float timer, string damagetype, string damager)
         {
-            deathDatas.Add(new DeathData(x, y, z, timer, damager));
-            StartCoroutine(PlayerRequest(x, y, z, timer, damager));
+            deathDatas.Add(new DeathData(x, y, z, timer, damagetype, damager));
+            StartCoroutine(PlayerRequest(x, y, z, timer, damagetype, damager));
         }
-        public void GetHitPositionBySpit(float x, float y, float z, float timer, string damager)
+        public void GetHitPositionBySpit(float x, float y, float z, float timer, string damagetype, string damager)
         {
-            hitDatas.Add(new DeathData(x, y, z, timer, damager));
-            StartCoroutine(PlayerRequest(x, y, z, timer, damager));
+            hitDatas.Add(new DeathData(x, y, z, timer, damagetype, damager));
+            StartCoroutine(PlayerRequest(x, y, z, timer, damagetype, damager));
         }
-        public void GetHitPositionByAcid(float x, float y, float z, float timer, string damager)
+        public void GetHitPositionByAcid(float x, float y, float z, float timer, string damagetype, string damager)
         {
-            hitDatas.Add(new DeathData(x, y, z, timer, damager));
-            StartCoroutine(PlayerRequest(x, y, z, timer, damager));
+            hitDatas.Add(new DeathData(x, y, z, timer, damagetype, damager));
+            StartCoroutine(PlayerRequest(x, y, z, timer, damagetype, damager));
         }
-        IEnumerator PlayerRequest(float x, float y, float z, float timer, string damager)
+        private void Update()
+        {
+            
+        }
+        private void RaycastToGround()
+        {
+            RaycastHit hit;
+            //if(Physics.Raycast(player.transform.position, ))
+        }
+        IEnumerator PlayerRequest(float x, float y, float z, float timer, string damagetype, string damager)
         {
             string uri = "https://citmalumnes.upc.es/~marcrp5/Data.php";
 
@@ -81,6 +95,7 @@ namespace Gamekit3D
             form.AddField("y", y.ToString());
             form.AddField("z", z.ToString());
             form.AddField("timer", timer.ToString());
+            form.AddField("damagetype", damagetype);
             form.AddField("damager", damager);
 
             UnityWebRequest webRequest = UnityWebRequest.Post(uri, form);

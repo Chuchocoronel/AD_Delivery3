@@ -51,14 +51,16 @@
 $x = $_POST["x"];
 $y = $_POST["y"];
 $z = $_POST["z"];
-$time = $_POST["timer"];
+$timer = $_POST["timer"];
+$damagetype = $_POST["damagetype"];
 $damager = $_POST["damager"];
 $query = "INSERT INTO death
         SET
         x = '$x',
         y = '$y',
         z = '$z',
-        timer = '$time',
+        timer = '$timer',
+        damagetype = '$damagetype',
         damager = '$damager'";
 $result = mysqli_query($db,$query) or die('just  died');
 $last_inserted =  $db->insert_id;
