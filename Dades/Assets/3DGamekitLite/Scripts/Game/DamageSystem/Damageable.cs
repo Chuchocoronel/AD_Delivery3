@@ -118,10 +118,10 @@ namespace Gamekit3D
                     switch (data.damager.ToString())
                     {
                         case "Spit(Clone) (Gamekit3D.Spit)":
-                            ourCode.GetHitPositionBySpit(player.position.x, player.position.y, player.position.z, Time.time, "Spit", "Monster");
+                            ourCode.GetHitPosition(player.position.x, player.position.y, player.position.z, Time.time, "Spit", "Monster", "Hit");
                             break;
                         case "AttackRoot (Gamekit3D.MeleeWeapon)":
-                            ourCode.GetHitPositionByAcid(player.position.x, player.position.y, player.position.z, Time.time, "Monster_Melee", "Monster");
+                            ourCode.GetHitPosition(player.position.x, player.position.y, player.position.z, Time.time, "Monster_Melee", "Monster", "Hit");
                             break;
 
                         default:
@@ -133,13 +133,13 @@ namespace Gamekit3D
                     switch (data.damager.ToString())
                     {
                         case "Acid (Gamekit3D.DamageZone)":
-                            ourCode.GetDeathPosition(player.position.x, player.position.y, player.position.z, Time.time, "Acid", "Acid");
+                            ourCode.GetDeathPosition(player.position.x, player.position.y, player.position.z, Time.time, "Acid", "Acid", "Death");
                             break;
                         case "Spit(Clone) (Gamekit3D.Spit)":
-                            ourCode.GetDeathPosition(player.position.x, player.position.y, player.position.z, Time.time, "Spit", "Monster");
+                            ourCode.GetDeathPosition(player.position.x, player.position.y, player.position.z, Time.time, "Spit", "Monster", "Death");
                             break;
                         case "AttackRoot (Gamekit3D.MeleeWeapon)":
-                            ourCode.GetDeathPosition(player.position.x, player.position.y, player.position.z, Time.time, "MeleeWeapon", "Monster");
+                            ourCode.GetDeathPosition(player.position.x, player.position.y, player.position.z, Time.time, "MeleeWeapon", "Monster", "Death");
                             break;
                         default:
                             break;

@@ -8,6 +8,7 @@ using System;
 using UnityEngine.Networking;
 using Cinemachine.Utility;
 using Unity.VisualScripting;
+using System.ComponentModel;
 
 namespace Gamekit3D
 {
@@ -29,8 +30,10 @@ namespace Gamekit3D
         public float Timer;
         public string Damager;
         public string DamageType;
+        public int Id;
+        public string Type;
 
-        public DeathData(float x, float y, float z, float timer, string damagetype, string damager)
+        public DeathData(float x, float y, float z, float timer, string damagetype, string damager, string type)
         {
             X = x;
             Y = y;
@@ -38,15 +41,50 @@ namespace Gamekit3D
             Timer = timer;
             DamageType = damagetype;
             Damager = damager;
+            Type = type;
+        }
+        public DeathData(float x, float y, float z, float timer, string damagetype, string damager, string type, int id)
+        {
+            X = x;
+            Y = y;
+            Z = z;
+            Timer = timer;
+            DamageType = damagetype;
+            Damager = damager;
+            Type = type;
+            Id = id;
         }
     }
+    [System.Serializable]
+    public class HitData
+    {
+        public float X;
+        public float Y;
+        public float Z;
+        public float Timer;
+        public string Damager;
+        public string DamageType;
+        public string Type;
+        public HitData(float x, float y, float z, float timer, string damagetype, string damager, string type)
+        {
+            X = x;
+            Y = y;
+            Z = z;
+            Timer = timer;
+            DamageType = damagetype;
+            Damager = damager;
+            Type = type;
+        }
+    }
+    
+
     public class Our_Code : MonoBehaviour
     {
         private GameObject player;
 
 
         public List<DeathData> deathDatas = new List<DeathData>();
-        public List<DeathData> hitDatas = new List<DeathData>();
+        public List<HitData> hitDatas = new List<HitData>();
         public List<DeathData> downloadedData = new List<DeathData>();
         
         private string[] downloadedString;
@@ -57,10 +95,11 @@ namespace Gamekit3D
         private RaycastHit hitt;
         private bool canSpawnCube = true;
         [SerializeField] private List<Vector3> playerTrackedPositions = new List<Vector3>();
-        [SerializeField] private bool showPlayerPathInGame = false;
-        [SerializeField] private TrailRenderer tr;
+        private bool showPlayerPathInGame = false;
+        private TrailRenderer tr;
         private string[] user;
         private string rawresponse;
+        private int newId;
         
 
         // Start is called before the first frame update
@@ -69,25 +108,15 @@ namespace Gamekit3D
             player = GameObject.Find("Ellen_Body");
             tr = GameObject.Find("Our_TrailPosition").GetComponent<TrailRenderer>();
         }
-        public void GetDeathPositionByMonster(float x, float y, float z, float timer, string damagetype, string damager)
+        public void GetDeathPosition(float x, float y, float z, float timer, string damagetype, string damager, string type)
         {
-            deathDatas.Add(new DeathData(x,y,z,timer, damagetype, damager));
-            StartCoroutine(PlayerRequest(x, y, z, timer, damagetype, damager));
+            deathDatas.Add(new DeathData(x, y, z, timer, damagetype, damager, type));
+            StartCoroutine(PlayerRequest(x, y, z, timer, damagetype, damager, type));
         }
-        public void GetDeathPosition(float x, float y, float z, float timer, string damagetype, string damager)
+        public void GetHitPosition(float x, float y, float z, float timer, string damagetype, string damager, string type)
         {
-            deathDatas.Add(new DeathData(x, y, z, timer, damagetype, damager));
-            StartCoroutine(PlayerRequest(x, y, z, timer, damagetype, damager));
-        }
-        public void GetHitPositionBySpit(float x, float y, float z, float timer, string damagetype, string damager)
-        {
-            hitDatas.Add(new DeathData(x, y, z, timer, damagetype, damager));
-            StartCoroutine(PlayerRequest(x, y, z, timer, damagetype, damager));
-        }
-        public void GetHitPositionByAcid(float x, float y, float z, float timer, string damagetype, string damager)
-        {
-            hitDatas.Add(new DeathData(x, y, z, timer, damagetype, damager));
-            StartCoroutine(PlayerRequest(x, y, z, timer, damagetype, damager));
+            hitDatas.Add(new HitData(x, y, z, timer, damagetype, damager, type));
+            StartCoroutine(PlayerRequest(x, y, z, timer, damagetype, damager, type));
         }
         private void Update()
         {
@@ -151,7 +180,7 @@ namespace Gamekit3D
                 return false;
             }
         }
-        IEnumerator PlayerRequest(float x, float y, float z, float timer, string damagetype, string damager)
+        IEnumerator PlayerRequest(float x, float y, float z, float timer, string damagetype, string damager, string type)
         {
             string uri = "https://citmalumnes.upc.es/~marcrp5/Data.php";
 
@@ -162,6 +191,7 @@ namespace Gamekit3D
             form.AddField("timer", timer.ToString());
             form.AddField("damagetype", damagetype);
             form.AddField("damager", damager);
+            form.AddField("type", type);
 
             UnityWebRequest webRequest = UnityWebRequest.Post(uri, form);
             {
@@ -210,9 +240,10 @@ namespace Gamekit3D
                         bool f2 = float.TryParse((downloadedString[1]), out y);
                         bool f3 = float.TryParse((downloadedString[2]), out z);
                         bool f4 = float.TryParse((downloadedString[3]), out timer);
+                        //bool i1 = int.TryParse(downloadedString[6], out id);
 
                         if(f1&&f2&&f3&&f4)
-                            downloadedData.Add(new DeathData(x, y, z, timer, downloadedString[4], downloadedString[5]));
+                            downloadedData.Add(new DeathData(x, y, z, timer, downloadedString[4], downloadedString[5], downloadedString[6]));
                     }                    
                 }
             }

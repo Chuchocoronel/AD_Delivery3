@@ -1,31 +1,31 @@
 <?php
-$servername = "localhost";
-$username = "marcrp5";
-$password = "azqTgT2U5V";
-$db = "marcrp5";
+ $servername = "localhost";
+ $username = "marcrp5";
+ $password = "azqTgT2U5V";
+ $database = "marcrp5";
 
-// Create connection
-$conn = new mysqli($servername, $username, $password, $db);
-
-// Check connection
-if($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+ $db = new mysqli($servername, $username, $password, $database);
+ if($db->connection_error) {
+     die("Connection failed: " . $conn->connect_error);
 }
-echo "Connected Successfully"."<br>";
+$x = $_POST["x"];
+$y = $_POST["y"];
+$z = $_POST["z"];
+$timer = $_POST["timer"];
+$damagetype = $_POST["damagetype"];
+$damager = $_POST["damager"];
+$type = $_POST["type"];
 
-$sql = "SELECT HitNum, PlayerPosX, PlayerPosY, PlayerPosZ, EnemyName, EnemyPosX, EnemyPosY, EnemyPosZ, GameTime FROM Hits";
-
-$result = $conn->query($sql);
-
-if($result->num_rows > 0)
-{
-    // Output data from each row.
-    while($row = $result->fetch_assoc()) {
-        echo "*".$row["HitNum"]."/".$row["PlayerPosX"]."/".$row["PlayerPosY"]."/".$row["PlayerPosZ"]."/".$row["EnemyName"]."/".$row["EnemyPosX"]."/".$row["EnemyPosY"]."/".$row["EnemyPosZ"]."/".$row["GameTime"];
-    }
-} else {
-    echo "0 results";
-}
-
-$conn->close();
+$query = "INSERT INTO death
+        SET
+        x = '$x',
+        y = '$y',
+        z = '$z',
+        timer = '$timer',
+        damagetype = '$damagetype',
+        damager = '$damager',
+        type = '$type'";
+$result = mysqli_query($db,$query) or die('just  died');
+$last_inserted =  $db->insert_id;
+print($last_inserted);
 ?>
