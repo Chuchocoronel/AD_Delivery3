@@ -248,6 +248,11 @@ namespace Gamekit3D
                 }
             }
         }
+
+        public List<DeathData> GetDownloadedData()
+        {
+            return downloadedData;
+        }
     }
 }
 
