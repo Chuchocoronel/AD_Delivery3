@@ -82,24 +82,31 @@ namespace Gamekit3D
     {
         private GameObject player;
 
-
+        // ------------------ LISTS ------------------ 
         public List<DeathData> deathDatas = new List<DeathData>();
         public List<HitData> hitDatas = new List<HitData>();
         public List<DeathData> downloadedData = new List<DeathData>();
-        
+        public List<Vector3> downloadedPositionsList = new List<Vector3>();
+        [SerializeField] private List<Vector3> playerTrackedPositions = new List<Vector3>();
+        // ------------------ LISTS ------------------ 
+
+
+
         private string[] downloadedString;
+        private string[] downloadedStringDownloadPositions;
         [SerializeField]
         public float raycastLength = 1f;
         public GameObject pathTrackerGameObject;
         public float waitTime = 10f;
         private RaycastHit hitt;
         private bool canSpawnCube = true;
-        [SerializeField] private List<Vector3> playerTrackedPositions = new List<Vector3>();
+        
         private bool showPlayerPathInGame = false;
         private TrailRenderer tr;
         private string[] user;
+        private string[] userDownloadPositions;
         private string rawresponse;
-        private int newId;
+        private string rawresponseDownloadPositions;
         
 
         // Start is called before the first frame update
@@ -112,6 +119,10 @@ namespace Gamekit3D
         {
             deathDatas.Add(new DeathData(x, y, z, timer, damagetype, damager, type));
             StartCoroutine(PlayerRequest(x, y, z, timer, damagetype, damager, type));
+            for(int i = 0; i < playerTrackedPositions.Count; i++)
+            {
+                
+            }
         }
         public void GetHitPosition(float x, float y, float z, float timer, string damagetype, string damager, string type)
         {
@@ -140,6 +151,7 @@ namespace Gamekit3D
             }
             if(Input.GetKeyDown(KeyCode.L))
             {
+                StartCoroutine(DownloadPositions());
                 StartCoroutine(GetInfo());
             }
                 
@@ -151,6 +163,7 @@ namespace Gamekit3D
             if(RaycastToGround())
             {
                 playerTrackedPositions.Add(hitt.point);
+                StartCoroutine(UpPositions(hitt.point.x, hitt.point.y, hitt.point.z));
                 Debug.DrawRay(player.transform.position, -player.transform.up * raycastLength, Color.blue, 3f);
             }
             canSpawnCube = true;            
@@ -218,6 +231,39 @@ namespace Gamekit3D
             }
         }
 
+        public IEnumerator UpPositions(float x, float y, float z)
+        {
+            string uri = "https://citmalumnes.upc.es/~marcrp5/UpPositions.php";
+
+            WWWForm form = new WWWForm();
+            form.AddField("positionx", x.ToString().Replace(",", "."));
+            form.AddField("positiony", y.ToString().Replace(",", "."));
+            form.AddField("positionz", z.ToString().Replace(",", "."));
+
+            UnityWebRequest webRequest = UnityWebRequest.Post(uri, form);
+            {
+                // Request and wait for the desired page.
+                yield return webRequest.SendWebRequest();
+
+                string[] pages = uri.Split('/');
+                int page = pages.Length - 1;
+
+                switch (webRequest.result)
+                {
+                    case UnityWebRequest.Result.ConnectionError:
+                    case UnityWebRequest.Result.DataProcessingError:
+                        Debug.LogError(pages[page] + ": Error: " + webRequest.error);
+                        break;
+                    case UnityWebRequest.Result.ProtocolError:
+                        Debug.LogError(pages[page] + ": HTTP Error: " + webRequest.error);
+                        break;
+                    case UnityWebRequest.Result.Success:
+
+                        break;
+                }
+            }
+        }
+
         IEnumerator GetInfo()
         {
             using(UnityWebRequest req = UnityWebRequest.Get("https://citmalumnes.upc.es/~marcrp5/GetInfo.php"))
@@ -240,11 +286,43 @@ namespace Gamekit3D
                         bool f2 = float.TryParse((downloadedString[1]), out y);
                         bool f3 = float.TryParse((downloadedString[2]), out z);
                         bool f4 = float.TryParse((downloadedString[3]), out timer);
-                        //bool i1 = int.TryParse(downloadedString[6], out id);
 
                         if(f1&&f2&&f3&&f4)
                             downloadedData.Add(new DeathData(x, y, z, timer, downloadedString[4], downloadedString[5], downloadedString[6]));
                     }                    
+                }
+            }
+        }
+
+        IEnumerator DownloadPositions()
+        {
+            using (UnityWebRequest req = UnityWebRequest.Get("https://citmalumnes.upc.es/~marcrp5/DownloadPositions.php"))
+            {
+                yield return req.SendWebRequest();
+                if (req.result == UnityWebRequest.Result.ConnectionError)
+                {
+                    Debug.Log("Error: " + req.error);
+                }
+                else
+                {
+                    rawresponseDownloadPositions = req.downloadHandler.text;
+                    userDownloadPositions = rawresponseDownloadPositions.Split("*");
+                    for (int i = 1; i < userDownloadPositions.Length; i++)
+                    {
+                        downloadedStringDownloadPositions = userDownloadPositions[i].Split("/");
+                        float x;
+                        float y;
+                        float z;
+                        bool f1 = float.TryParse((downloadedStringDownloadPositions[0].Replace(".",",")), out x);
+                        bool f2 = float.TryParse((downloadedStringDownloadPositions[1].Replace(".", ",")), out y);
+                        bool f3 = float.TryParse((downloadedStringDownloadPositions[2].Replace(".", ",")), out z);
+
+                        if (f1 && f2 && f3)
+                        {
+                            downloadedPositionsList.Add(new Vector3(x,y,z));
+                        }
+
+                    }
                 }
             }
         }
@@ -255,4 +333,3 @@ namespace Gamekit3D
         }
     }
 }
-

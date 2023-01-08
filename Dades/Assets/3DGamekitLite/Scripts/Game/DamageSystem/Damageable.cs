@@ -134,6 +134,7 @@ namespace Gamekit3D
                     {
                         case "Acid (Gamekit3D.DamageZone)":
                             ourCode.GetDeathPosition(player.position.x, player.position.y, player.position.z, Time.time, "Acid", "Acid", "Death");
+
                             break;
                         case "Spit(Clone) (Gamekit3D.Spit)":
                             ourCode.GetDeathPosition(player.position.x, player.position.y, player.position.z, Time.time, "Spit", "Monster", "Death");
