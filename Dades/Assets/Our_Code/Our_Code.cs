@@ -47,20 +47,20 @@ namespace Gamekit3D
 
         public List<DeathData> deathDatas = new List<DeathData>();
         public List<DeathData> hitDatas = new List<DeathData>();
+        public List<DeathData> downloadedData = new List<DeathData>();
         
-        [SerializeField] private string[] downloadedString;
+        private string[] downloadedString;
         [SerializeField]
         public float raycastLength = 1f;
         public GameObject pathTrackerGameObject;
         public float waitTime = 10f;
         private RaycastHit hitt;
         private bool canSpawnCube = true;
-        [SerializeField] private List<Vector3> v = new List<Vector3>();
+        [SerializeField] private List<Vector3> playerTrackedPositions = new List<Vector3>();
         [SerializeField] private bool showPlayerPathInGame = false;
         [SerializeField] private TrailRenderer tr;
-        [SerializeField] private string[] user;
-        [SerializeField] private string rawresponse;
-        [SerializeField] private DeathData[] oriolLaXupes;
+        private string[] user;
+        private string rawresponse;
         
 
         // Start is called before the first frame update
@@ -121,7 +121,7 @@ namespace Gamekit3D
             yield return new WaitForSeconds(waitTime);
             if(RaycastToGround())
             {
-                v.Add(hitt.point);
+                playerTrackedPositions.Add(hitt.point);
                 Debug.DrawRay(player.transform.position, -player.transform.up * raycastLength, Color.blue, 3f);
             }
             canSpawnCube = true;            
@@ -129,11 +129,11 @@ namespace Gamekit3D
         private void OnDrawGizmos()
         {
             Gizmos.color = Color.green;
-            if(v.Count > 0)
+            if(playerTrackedPositions.Count > 0)
             {
-                for (int i = 1; i < v.Count; i++)
+                for (int i = 1; i < playerTrackedPositions.Count; i++)
                 {
-                    Gizmos.DrawLine(v[i - 1], v[i]);
+                    Gizmos.DrawLine(playerTrackedPositions[i - 1], playerTrackedPositions[i]);
                 }
             }
             
@@ -199,18 +199,20 @@ namespace Gamekit3D
                 {
                     rawresponse = req.downloadHandler.text;
                     user = rawresponse.Split("*");
-                    Debug.Log("This is user length" + user.Length);
-                    for (int i = 0; i < user.Length; i++)
+                    for (int i = 1; i < user.Length; i++)
                     {
                         downloadedString = user[i].Split("/");
+                        float x;
+                        float y;
+                        float z;
+                        float timer;
+                        bool f1 = float.TryParse((downloadedString[0]), out x);
+                        bool f2 = float.TryParse((downloadedString[1]), out y);
+                        bool f3 = float.TryParse((downloadedString[2]), out z);
+                        bool f4 = float.TryParse((downloadedString[3]), out timer);
 
-                        oriolLaXupes = new DeathData[downloadedString.Length];
-                        oriolLaXupes[i].X = float.Parse(downloadedString[0].Replace(".", ","));
-                        oriolLaXupes[i].Y = float.Parse(downloadedString[1].Replace(".", ","));
-                        oriolLaXupes[i].Z = float.Parse(downloadedString[2].Replace(".", ","));
-                        oriolLaXupes[i].Timer = float.Parse(downloadedString[3].Replace(".", ","));
-                        oriolLaXupes[i].DamageType = (downloadedString[4]);
-                        oriolLaXupes[i].Damager = (downloadedString[5]);
+                        if(f1&&f2&&f3&&f4)
+                            downloadedData.Add(new DeathData(x, y, z, timer, downloadedString[4], downloadedString[5]));
                     }                    
                 }
             }
