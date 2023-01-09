@@ -24,8 +24,7 @@ namespace Gamekit3D
         void Update()
         {
 
-
-            if (Input.GetKeyDown(KeyCode.L))
+            if (Input.GetKeyDown(KeyCode.I))
             {
                 SpawnCubes();
 

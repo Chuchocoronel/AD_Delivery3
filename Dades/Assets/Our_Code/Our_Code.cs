@@ -356,7 +356,7 @@ namespace Gamekit3D
 
         public List<DeathData> GetDownloadedData()
         {
-            return downloadedDeathData;
+            return downloadedDeathDataDamagerDeath;
         }
 
         public List<Vector3> GetDownloadedPositions()

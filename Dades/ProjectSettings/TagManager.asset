@@ -6,6 +6,7 @@ TagManager:
   tags:
   - FlythroughCam
   - Arrow
+  - DeathPos
   layers:
   - Default
   - TransparentFX
