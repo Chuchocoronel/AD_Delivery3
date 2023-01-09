@@ -90,6 +90,8 @@ namespace Gamekit3D
         [SerializeField] private List<Vector3> playerTrackedPositions = new List<Vector3>();
         // ------------------ LISTS ------------------ 
 
+        // 
+        public GameObject trackedPositionsArrowGameObject;
 
 
         private string[] downloadedString;
@@ -102,7 +104,6 @@ namespace Gamekit3D
         private bool canSpawnCube = true;
         
         private bool showPlayerPathInGame = false;
-        private TrailRenderer tr;
         private string[] user;
         private string[] userDownloadPositions;
         private string rawresponse;
@@ -113,16 +114,11 @@ namespace Gamekit3D
         private void Awake()
         {
             player = GameObject.Find("Ellen_Body");
-            tr = GameObject.Find("Our_TrailPosition").GetComponent<TrailRenderer>();
         }
         public void GetDeathPosition(float x, float y, float z, float timer, string damagetype, string damager, string type)
         {
             deathDatas.Add(new DeathData(x, y, z, timer, damagetype, damager, type));
             StartCoroutine(PlayerRequest(x, y, z, timer, damagetype, damager, type));
-            for(int i = 0; i < playerTrackedPositions.Count; i++)
-            {
-                
-            }
         }
         public void GetHitPosition(float x, float y, float z, float timer, string damagetype, string damager, string type)
         {
@@ -131,20 +127,6 @@ namespace Gamekit3D
         }
         private void Update()
         {
-            if(Input.GetKeyDown(KeyCode.E))
-            {
-                showPlayerPathInGame = !showPlayerPathInGame;
-            }
-            if(showPlayerPathInGame)
-            {
-                tr.startWidth = 0.5f;
-                tr.endWidth = 0.5f;
-            }
-            else
-            {
-                tr.startWidth = 0f;
-                tr.endWidth = 0f;
-            }
             if(canSpawnCube)
             {
                 StartCoroutine(Wait());
@@ -153,6 +135,7 @@ namespace Gamekit3D
             {
                 StartCoroutine(DownloadPositions());
                 StartCoroutine(GetInfo());
+                GenerateTrackedPath();
             }
                 
         }
@@ -330,6 +313,29 @@ namespace Gamekit3D
         public List<DeathData> GetDownloadedData()
         {
             return downloadedData;
+        }
+
+        public List<Vector3> GetDownloadedPositions()
+        {
+            return downloadedPositionsList;
+        }
+
+        public void GenerateTrackedPath()
+        {
+            for(int i = 0; i < downloadedPositionsList.Count; i++)
+            {
+                Vector3 arrowForwardVector = Vector3.zero;
+                float zScale = 0;
+                if(i < downloadedPositionsList.Count)
+                {
+                    arrowForwardVector = downloadedPositionsList[i + 1] - downloadedPositionsList[i];
+                    zScale = Vector3.Distance(downloadedPositionsList[i + 1], downloadedPositionsList[i]);
+                }
+
+                GameObject go = Instantiate(trackedPositionsArrowGameObject, downloadedPositionsList[i], Quaternion.identity);
+                go.transform.localScale = new Vector3(zScale*5, zScale, zScale*14);
+                go.transform.forward = arrowForwardVector;
+            }
         }
     }
 }
