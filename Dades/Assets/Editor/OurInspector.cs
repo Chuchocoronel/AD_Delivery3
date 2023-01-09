@@ -73,7 +73,11 @@ namespace Gamekit3D
             {
                 Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Our_Code>().ClearAllDataFromUnity();
             }
-            EditorGUILayout.EndToggleGroup();
+            myBool = GUILayout.Toggle(myBool, "Heatmap");
+            Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Cubes>().ShowHeatMap(myBool);
+            
+
+            //EditorGUILayout.EndToggleGroup();
         }
     }
 }

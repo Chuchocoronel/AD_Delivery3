@@ -63,5 +63,10 @@ namespace Gamekit3D
                 item.CleanCubes();
             }
         }
+
+        public void ShowHeatMap(bool active)
+        {
+            HeatMapCubes.SetActive(active);
+        }
     }
 }
