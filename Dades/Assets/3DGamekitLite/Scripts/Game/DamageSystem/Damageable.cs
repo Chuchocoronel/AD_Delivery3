@@ -118,10 +118,10 @@ namespace Gamekit3D
                     switch (data.damager.ToString())
                     {
                         case "Spit(Clone) (Gamekit3D.Spit)":
-                            ourCode.GetHitPosition(player.position.x, player.position.y, player.position.z, Time.time, "Spit", "Monster", "Hit");
+                            ourCode.GetHitPosition(player.position.x, player.position.y, player.position.z, Time.time, "MonsterSpit", "Monster", "Hit");
                             break;
                         case "AttackRoot (Gamekit3D.MeleeWeapon)":
-                            ourCode.GetHitPosition(player.position.x, player.position.y, player.position.z, Time.time, "Monster_Melee", "Monster", "Hit");
+                            ourCode.GetHitPosition(player.position.x, player.position.y, player.position.z, Time.time, "MonsterMelee", "Monster", "Hit");
                             break;
 
                         default:
@@ -137,10 +137,10 @@ namespace Gamekit3D
 
                             break;
                         case "Spit(Clone) (Gamekit3D.Spit)":
-                            ourCode.GetDeathPosition(player.position.x, player.position.y, player.position.z, Time.time, "Spit", "Monster", "Death");
+                            ourCode.GetDeathPosition(player.position.x, player.position.y, player.position.z, Time.time, "MonsterSpit", "Monster", "Death");
                             break;
                         case "AttackRoot (Gamekit3D.MeleeWeapon)":
-                            ourCode.GetDeathPosition(player.position.x, player.position.y, player.position.z, Time.time, "MeleeWeapon", "Monster", "Death");
+                            ourCode.GetDeathPosition(player.position.x, player.position.y, player.position.z, Time.time, "MonsterMelee", "Monster", "Death");
                             break;
                         default:
                             break;

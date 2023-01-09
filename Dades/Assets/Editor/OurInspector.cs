@@ -35,6 +35,10 @@ namespace Gamekit3D
             {
                 Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Cubes>().SpawnCubes();
             }
+            if (GUILayout.Button("Remove Path Data"))
+            {
+                Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Our_Code>().RemovePath();
+            }
             if (GUILayout.Button("Remove Data From Unity"))
             {
                 Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Our_Code>().ClearAllDataFromUnity();

@@ -143,6 +143,14 @@ namespace Gamekit3D
             StartCoroutine(DownloadPositions());
             StartCoroutine(GetInfo());
         }
+        public void RemovePath()
+        {
+            GameObject[] aux = GameObject.FindGameObjectsWithTag("Arrow");
+            for (int i = 0; i < aux.Length; ++i)
+            {
+                Destroy(aux[i]);
+            }
+        }
         public void ClearAllDataFromUnity()
         {
             deathDatas.Clear();
@@ -329,10 +337,10 @@ namespace Gamekit3D
                                 case "Acid":
                                     downloadedDeathDataDamageTypeAcid.Add(new DeathData(x, y, z, timer, downloadedString[4], downloadedString[5], downloadedString[6]));
                                     break;
-                                case "Monster_Melee":
+                                case "MonsterMelee":
                                     downloadedDeathDataDamageTypeMonsterMelee.Add(new DeathData(x, y, z, timer, downloadedString[4], downloadedString[5], downloadedString[6]));
                                     break;
-                                case "Spit":
+                                case "MonsterSpit":
                                     downloadedDeathDataDamageTypeSpit.Add(new DeathData(x, y, z, timer, downloadedString[4], downloadedString[5], downloadedString[6]));
                                     break;
                                 default:
@@ -343,7 +351,7 @@ namespace Gamekit3D
                                 case "Acid":
                                     downloadedDeathDataDamagerAcid.Add(new DeathData(x, y, z, timer, downloadedString[4], downloadedString[5], downloadedString[6]));
                                     break;
-                                case "Spit":
+                                case "Monster":
                                     downloadedDeathDataDamagerSpit.Add(new DeathData(x, y, z, timer, downloadedString[4], downloadedString[5], downloadedString[6]));
                                     break;
                                 default:
