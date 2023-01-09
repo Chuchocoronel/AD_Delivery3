@@ -110,7 +110,6 @@ namespace Gamekit3D
         private RaycastHit hitt;
         private bool canSpawnCube = true;
         
-        private bool showPlayerPathInGame = false;
         private string[] user;
         private string[] userDownloadPositions;
         private string rawresponse;
