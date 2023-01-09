@@ -19,6 +19,13 @@ namespace Gamekit3D
         [SerializeField] private GameObject HeatMapCubes;
         private List<heatMapCube> heatMapCubesList;
 
+        // Variables Grid
+        public int gridX;
+        public int gridY;
+        public float gridSpacingOffset = 1f;
+        [SerializeField] GameObject HeatmapCubePrefab;
+        List<GameObject> cubesOfHeatMapList = new List<GameObject>();
+
         private bool newData = false;
         private void Start()
         {
@@ -67,6 +74,24 @@ namespace Gamekit3D
         public void ShowHeatMap(bool active)
         {
             HeatMapCubes.SetActive(active);
+        }
+
+        public void SpawnGrid()
+        {
+            for (int i = 0; i < cubesOfHeatMapList.Count; ++i)
+            {
+                DestroyImmediate(cubesOfHeatMapList[i]);
+            }
+            cubesOfHeatMapList.Clear();
+
+            for (int i = 0; i < gridX; i++)
+            {
+                for (int j = 0; j < gridY; j++)
+                {
+                    Vector3 spawnPosition = new Vector3(i * gridSpacingOffset, 0, j * gridSpacingOffset) + HeatMapCubes.transform.position;
+                    cubesOfHeatMapList.Add(Instantiate(HeatmapCubePrefab, spawnPosition, Quaternion.identity, HeatMapCubes.transform));
+                }
+            }
         }
     }
 }

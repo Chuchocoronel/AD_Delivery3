@@ -63,7 +63,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: 8a418aecaa571c44c87342e0244392b4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -112,12 +112,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cubeColors:
   - {r: 1, g: 1, b: 1, a: 0.39215687}
-  - {r: 0.7430861, g: 1, b: 0, a: 0.39215687}
-  - {r: 0.8732661, g: 1, b: 0, a: 0.39215687}
-  - {r: 1, g: 0.95224696, b: 0, a: 0.39215687}
-  - {r: 1, g: 0.7345494, b: 0, a: 0.39215687}
-  - {r: 1, g: 0, b: 0, a: 0.39215687}
-  - {r: 0.5849056, g: 0, b: 0, a: 0.39215687}
+  - {r: 0.7430861, g: 1, b: 0, a: 0.78431374}
+  - {r: 0.8732661, g: 1, b: 0, a: 0.78431374}
+  - {r: 1, g: 0.95224696, b: 0, a: 0.78431374}
+  - {r: 1, g: 0.7345494, b: 0, a: 0.78431374}
+  - {r: 1, g: 0, b: 0, a: 0.78431374}
+  - {r: 0.5849056, g: 0, b: 0, a: 0.78431374}
   bounds:
     m_Center: {x: -0.4, y: 3.2, z: 28.52}
     m_Extent: {x: 4.6145, y: 4.6145, z: 4.6145}

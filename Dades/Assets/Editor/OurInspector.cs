@@ -20,6 +20,9 @@ namespace Gamekit3D
             // Get existing open window or if none, make a new one:
             OurInspector window = (OurInspector)EditorWindow.GetWindow(typeof(OurInspector));
             window.Show();
+
+            // Spawning Grid, Not necesary but we let it here
+            //Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Cubes>().SpawnGrid();
         }
         void OnGUI()
         {
@@ -75,7 +78,7 @@ namespace Gamekit3D
             }
             myBool = GUILayout.Toggle(myBool, "Heatmap");
             Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Cubes>().ShowHeatMap(myBool);
-            
+
 
             //EditorGUILayout.EndToggleGroup();
         }
