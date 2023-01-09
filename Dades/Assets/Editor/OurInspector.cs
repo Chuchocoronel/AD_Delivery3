@@ -31,13 +31,43 @@ namespace Gamekit3D
             {
                 Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Our_Code>().GeneratePath();
             }
-            if (GUILayout.Button("Show cubes"))
+            if (GUILayout.Button("Show Cubes from all Data"))
             {
-                Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Cubes>().SpawnCubes();
+                Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Cubes>().ClearAllCubes();
+                Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Cubes>().SpawnCubes(Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Our_Code>().downloadedDeathData);
+            }
+            if (GUILayout.Button("Show Cubes from Damager Acid"))
+            {
+                Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Cubes>().ClearAllCubes();
+                Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Cubes>().SpawnCubes(Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Our_Code>().downloadedDeathDataDamagerAcid);
+            }
+            if (GUILayout.Button("Show Cubes from Damager Monster"))
+            {
+                Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Cubes>().ClearAllCubes();
+                Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Cubes>().SpawnCubes(Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Our_Code>().downloadedDeathDataDamagerSpit);
+            }
+            if (GUILayout.Button("Show Cubes from DamageType Acid"))
+            {
+                Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Cubes>().ClearAllCubes();
+                Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Cubes>().SpawnCubes(Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Our_Code>().downloadedDeathDataDamageTypeAcid);
+            }
+            if (GUILayout.Button("Show Cubes from DamageType MonsterMelee"))
+            {
+                Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Cubes>().ClearAllCubes();
+                Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Cubes>().SpawnCubes(Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Our_Code>().downloadedDeathDataDamageTypeMonsterMelee);
+            }
+            if (GUILayout.Button("Show Cubes from DamageType Spit"))
+            {
+                Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Cubes>().ClearAllCubes();
+                Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Cubes>().SpawnCubes(Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Our_Code>().downloadedDeathDataDamageTypeMonsterMelee);
             }
             if (GUILayout.Button("Remove Path Data"))
             {
                 Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Our_Code>().RemovePath();
+            }
+            if (GUILayout.Button("Remove Cube Data"))
+            {
+                Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Cubes>().ClearAllCubes();
             }
             if (GUILayout.Button("Remove Data From Unity"))
             {

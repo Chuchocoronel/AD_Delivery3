@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.PlayerSettings;
+using static UnityEditor.Progress;
 
 
 namespace Gamekit3D
@@ -10,6 +12,7 @@ namespace Gamekit3D
 
         private Our_Code ourCode;
         public List<DeathData> data = new List<DeathData>();
+        public List<GameObject> allCubes = new List<GameObject>();
 
         [SerializeField] private GameObject deathCube;
         [SerializeField] private Transform Heatmap;
@@ -20,35 +23,37 @@ namespace Gamekit3D
             ourCode = GetComponent<Our_Code>();
         }
 
-        // Update is called once per frame
-        void Update()
+        public void SpawnCubes(List<DeathData> list)
         {
+            //data.Clear();
+            //data = ourCode.GetDownloadedData();
+            //foreach (Transform item in Heatmap)
+            //{
+            //    GameObject.Destroy(item.gameObject);
+            //}
 
-            if (Input.GetKeyDown(KeyCode.I))
+            //foreach (var item in data)
+            //{
+
+            //    Vector3 pos = new Vector3(item.X,item.Y,item.Z);
+
+            //    Instantiate(deathCube, pos,this.transform.rotation,Heatmap);
+            //}
+            for(int i = 0; i < list.Count; i++)
             {
-                SpawnCubes();
-
-                data.Clear();
-                data = ourCode.GetDownloadedData();
-
+                Vector3 pos = new Vector3(list[i].X, list[i].Y, list[i].Z);
+                GameObject go = Instantiate(deathCube, pos, this.transform.rotation, Heatmap);
+                allCubes.Add(go);
             }
-
         }
-
-        public void SpawnCubes()
+        public void ClearAllCubes()
         {
-            foreach (Transform item in Heatmap)
+            GameObject[] aux = GameObject.FindGameObjectsWithTag("DeathPos");
+            for (int i = 0; i < aux.Length; ++i)
             {
-                GameObject.Destroy(item.gameObject);
+                DestroyImmediate(aux[i]);
             }
-
-            foreach (var item in data)
-            {
-
-                Vector3 pos = new Vector3(item.X,item.Y,item.Z);
-
-                Instantiate(deathCube, pos,this.transform.rotation,Heatmap);
-            }
+            allCubes.Clear();
         }
     }
 }

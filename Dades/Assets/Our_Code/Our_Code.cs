@@ -94,6 +94,7 @@ namespace Gamekit3D
         public List<DeathData> downloadedDeathDataDamagerHit = new List<DeathData>();
         public List<DeathData> downloadedDeathDataDamagerDeath = new List<DeathData>();
         public List<Vector3> downloadedPositionsList = new List<Vector3>();
+        public List<GameObject> allTracks = new List<GameObject>();
         [SerializeField] private List<Vector3> playerTrackedPositions = new List<Vector3>();
         // ------------------ LISTS ------------------ 
 
@@ -148,8 +149,9 @@ namespace Gamekit3D
             GameObject[] aux = GameObject.FindGameObjectsWithTag("Arrow");
             for (int i = 0; i < aux.Length; ++i)
             {
-                Destroy(aux[i]);
+                DestroyImmediate(aux[i]);
             }
+            allTracks.Clear();
         }
         public void ClearAllDataFromUnity()
         {
@@ -416,15 +418,6 @@ namespace Gamekit3D
         {
             return downloadedPositionsList;
         }
-
-        public void DeleteAllArrows()
-        {
-            GameObject[] go = GameObject.FindGameObjectsWithTag("Arrow");
-            for(int i = 0; i < go.Length; i++)
-            {
-                Destroy(go[i]);
-            }
-        }
         public void GenerateTrackedPath()
         {
             for(int i = 0; i < downloadedPositionsList.Count; i++)
@@ -440,6 +433,8 @@ namespace Gamekit3D
                 GameObject go = Instantiate(trackedPositionsArrowGameObject, downloadedPositionsList[i], Quaternion.identity);
                 go.transform.localScale = new Vector3(zScale*5, zScale, zScale*14);
                 go.transform.forward = arrowForwardVector;
+
+                allTracks.Add(go);
             }
         }
     }
