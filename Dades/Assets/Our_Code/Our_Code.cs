@@ -85,7 +85,14 @@ namespace Gamekit3D
         // ------------------ LISTS ------------------ 
         public List<DeathData> deathDatas = new List<DeathData>();
         public List<HitData> hitDatas = new List<HitData>();
-        public List<DeathData> downloadedData = new List<DeathData>();
+        public List<DeathData> downloadedDeathData = new List<DeathData>();
+        public List<DeathData> downloadedDeathDataDamageTypeAcid = new List<DeathData>();
+        public List<DeathData> downloadedDeathDataDamageTypeMonsterMelee = new List<DeathData>();
+        public List<DeathData> downloadedDeathDataDamageTypeSpit = new List<DeathData>();
+        public List<DeathData> downloadedDeathDataDamagerAcid = new List<DeathData>();
+        public List<DeathData> downloadedDeathDataDamagerSpit = new List<DeathData>();
+        public List<DeathData> downloadedDeathDataDamagerHit = new List<DeathData>();
+        public List<DeathData> downloadedDeathDataDamagerDeath = new List<DeathData>();
         public List<Vector3> downloadedPositionsList = new List<Vector3>();
         [SerializeField] private List<Vector3> playerTrackedPositions = new List<Vector3>();
         // ------------------ LISTS ------------------ 
@@ -271,7 +278,45 @@ namespace Gamekit3D
                         bool f4 = float.TryParse((downloadedString[3]), out timer);
 
                         if(f1&&f2&&f3&&f4)
-                            downloadedData.Add(new DeathData(x, y, z, timer, downloadedString[4], downloadedString[5], downloadedString[6]));
+                        {
+                            downloadedDeathData.Add(new DeathData(x, y, z, timer, downloadedString[4], downloadedString[5], downloadedString[6]));
+                            switch (downloadedString[4])
+                            {
+                                case "Acid":
+                                    downloadedDeathDataDamageTypeAcid.Add(new DeathData(x, y, z, timer, downloadedString[4], downloadedString[5], downloadedString[6]));
+                                    break;
+                                case "Monster_Melee":
+                                    downloadedDeathDataDamageTypeMonsterMelee.Add(new DeathData(x, y, z, timer, downloadedString[4], downloadedString[5], downloadedString[6]));
+                                    break;
+                                case "Spit":
+                                    downloadedDeathDataDamageTypeSpit.Add(new DeathData(x, y, z, timer, downloadedString[4], downloadedString[5], downloadedString[6]));
+                                    break;
+                                default:
+                                    break;
+                            }
+                            switch (downloadedString[5])
+                            {
+                                case "Acid":
+                                    downloadedDeathDataDamagerAcid.Add(new DeathData(x, y, z, timer, downloadedString[4], downloadedString[5], downloadedString[6]));
+                                    break;
+                                case "Spit":
+                                    downloadedDeathDataDamagerSpit.Add(new DeathData(x, y, z, timer, downloadedString[4], downloadedString[5], downloadedString[6]));
+                                    break;
+                                default:
+                                    break;
+                            }
+                            switch (downloadedString[6])
+                            {
+                                case "Death":
+                                    downloadedDeathDataDamagerDeath.Add(new DeathData(x, y, z, timer, downloadedString[4], downloadedString[5], downloadedString[6]));
+                                    break;
+                                case "Hit":
+                                    downloadedDeathDataDamagerHit.Add(new DeathData(x, y, z, timer, downloadedString[4], downloadedString[5], downloadedString[6]));
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
                     }                    
                 }
             }
@@ -312,7 +357,7 @@ namespace Gamekit3D
 
         public List<DeathData> GetDownloadedData()
         {
-            return downloadedData;
+            return downloadedDeathData;
         }
 
         public List<Vector3> GetDownloadedPositions()
@@ -320,6 +365,14 @@ namespace Gamekit3D
             return downloadedPositionsList;
         }
 
+        public void DeleteAllArrows()
+        {
+            GameObject[] go = GameObject.FindGameObjectsWithTag("Arrow");
+            for(int i = 0; i < go.Length; i++)
+            {
+                Destroy(go[i]);
+            }
+        }
         public void GenerateTrackedPath()
         {
             for(int i = 0; i < downloadedPositionsList.Count; i++)
