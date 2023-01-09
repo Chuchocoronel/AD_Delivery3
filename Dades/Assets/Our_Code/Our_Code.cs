@@ -137,13 +137,15 @@ namespace Gamekit3D
             {
                 StartCoroutine(Wait());
             }
-            if(Input.GetKeyDown(KeyCode.L))
-            {
-                StartCoroutine(DownloadPositions());
-                StartCoroutine(GetInfo());
-                GenerateTrackedPath();
-            }
-                
+        }
+        public void DownloadAllData()
+        {
+            StartCoroutine(DownloadPositions());
+            StartCoroutine(GetInfo());
+        }
+        public void GeneratePath()
+        {
+            GenerateTrackedPath();
         }
         IEnumerator Wait()
         {

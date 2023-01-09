@@ -35,7 +35,7 @@ namespace Gamekit3D
 
         }
 
-        void SpawnCubes()
+        public void SpawnCubes()
         {
             foreach (Transform item in Heatmap)
             {
