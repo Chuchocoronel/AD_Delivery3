@@ -143,6 +143,20 @@ namespace Gamekit3D
             StartCoroutine(DownloadPositions());
             StartCoroutine(GetInfo());
         }
+        public void ClearAllDataFromUnity()
+        {
+            deathDatas.Clear();
+            hitDatas.Clear();
+            downloadedDeathData.Clear();
+            downloadedDeathDataDamagerAcid.Clear();
+            downloadedDeathDataDamagerDeath.Clear();
+            downloadedDeathDataDamagerHit.Clear();
+            downloadedDeathDataDamagerSpit.Clear();
+            downloadedDeathDataDamageTypeAcid.Clear();
+            downloadedDeathDataDamageTypeMonsterMelee.Clear();
+            downloadedDeathDataDamageTypeSpit.Clear();
+            downloadedPositionsList.Clear();            
+        }
         public void GeneratePath()
         {
             GenerateTrackedPath();
@@ -197,6 +211,35 @@ namespace Gamekit3D
             form.AddField("damager", damager);
             form.AddField("type", type);
 
+            UnityWebRequest webRequest = UnityWebRequest.Post(uri, form);
+            {
+                // Request and wait for the desired page.
+                yield return webRequest.SendWebRequest();
+
+                string[] pages = uri.Split('/');
+                int page = pages.Length - 1;
+
+                switch (webRequest.result)
+                {
+                    case UnityWebRequest.Result.ConnectionError:
+                    case UnityWebRequest.Result.DataProcessingError:
+                        Debug.LogError(pages[page] + ": Error: " + webRequest.error);
+                        break;
+                    case UnityWebRequest.Result.ProtocolError:
+                        Debug.LogError(pages[page] + ": HTTP Error: " + webRequest.error);
+                        break;
+                    case UnityWebRequest.Result.Success:
+                        Debug.Log("Reached Succes!");
+
+                        break;
+                }
+            }
+        }
+        public IEnumerator ClearDataFromSQL()
+        {
+            string uri = "https://citmalumnes.upc.es/~marcrp5/ClearSql.php";
+
+            WWWForm form = new WWWForm();
             UnityWebRequest webRequest = UnityWebRequest.Post(uri, form);
             {
                 // Request and wait for the desired page.

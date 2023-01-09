@@ -34,7 +34,10 @@ namespace Gamekit3D
             if (GUILayout.Button("Show cubes"))
             {
                 Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Cubes>().SpawnCubes();
-
+            }
+            if (GUILayout.Button("Remove Data From Unity"))
+            {
+                Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Our_Code>().ClearAllDataFromUnity();
             }
             EditorGUILayout.EndToggleGroup();
         }
