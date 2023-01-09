@@ -1,11 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 public class heatMapCube : MonoBehaviour
 {
 
     public List<Color> cubeColors = new List<Color>();
+    public Bounds bounds;
     public int count = 0;
 
 
@@ -18,32 +18,39 @@ public class heatMapCube : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
+    }
+
+    public void Count()
+    {
+        count = 0;
+        bounds = GetComponent<Renderer>().bounds;
+
+        Collider[] colliders = Physics.OverlapBox(bounds.center, bounds.extents);
+
+        foreach (var item in colliders)
+        {
+            if (item.gameObject.CompareTag("DeathPos"))
+            {
+                count++;
+            }
+        }
+        UpdateColor();
     }
 
     void UpdateColor()
     {
-        if (count > cubeColors.Count) count = cubeColors.Count;
-        transform.GetComponent<Renderer>().material.color = cubeColors[count];
-    }
-
-    private void OnTriggerStay(Collider other)
-    {
-        Debug.Log("BBBBBBBBBBBB");
-
-        if (other.CompareTag("DeathPos"))
+        if (count > cubeColors.Count-1)
+            transform.GetComponent<Renderer>().material.color = cubeColors[cubeColors.Count - 1];
+        else
         {
-            count++;
-            UpdateColor();
+            transform.GetComponent<Renderer>().material.color = cubeColors[count];
         }
     }
-    private void OnTriggerEnter(Collider other)
+
+    public void CleanCubes()
     {
-        Debug.Log("AAAAAAAAAAAAAAAAAAAAAAAAAAA");
-        if (other.CompareTag("DeathPos"))
-        {
-            count++;
-            UpdateColor();
-        }
+        transform.GetComponent<Renderer>().material.color = cubeColors[0];
     }
+
 }

@@ -16,6 +16,8 @@ namespace Gamekit3D
 
         [SerializeField] private GameObject deathCube;
         [SerializeField] private Transform Heatmap;
+        [SerializeField] private GameObject HeatMapCubes;
+        private List<heatMapCube> heatMapCubesList;
 
         private bool newData = false;
         private void Start()
@@ -25,25 +27,26 @@ namespace Gamekit3D
 
         public void SpawnCubes(List<DeathData> list)
         {
-            //data.Clear();
-            //data = ourCode.GetDownloadedData();
-            //foreach (Transform item in Heatmap)
-            //{
-            //    GameObject.Destroy(item.gameObject);
-            //}
-
-            //foreach (var item in data)
-            //{
-
-            //    Vector3 pos = new Vector3(item.X,item.Y,item.Z);
-
-            //    Instantiate(deathCube, pos,this.transform.rotation,Heatmap);
-            //}
+            
             for(int i = 0; i < list.Count; i++)
             {
                 Vector3 pos = new Vector3(list[i].X, list[i].Y, list[i].Z);
                 GameObject go = Instantiate(deathCube, pos, this.transform.rotation, Heatmap);
                 allCubes.Add(go);
+            }
+
+
+            if (heatMapCubesList.Count>0) heatMapCubesList.Clear();
+
+
+            for (int i = 0; i < HeatMapCubes.transform.childCount; i++)
+            {
+                heatMapCubesList.Add(HeatMapCubes.transform.GetChild(i).GetComponent<heatMapCube>());
+            }
+
+            foreach (heatMapCube item in heatMapCubesList)
+            {
+                item.Count();
             }
         }
         public void ClearAllCubes()
@@ -54,6 +57,11 @@ namespace Gamekit3D
                 DestroyImmediate(aux[i]);
             }
             allCubes.Clear();
+
+            foreach (heatMapCube item in heatMapCubesList)
+            {
+                item.CleanCubes();
+            }
         }
     }
 }
