@@ -115,7 +115,7 @@ namespace Gamekit3D
         private string rawresponse;
         private string rawresponseDownloadPositions;
         public bool drawGizmos = false;
-        
+
 
         // Start is called before the first frame update
         private void Awake()

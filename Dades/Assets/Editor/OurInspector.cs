@@ -1,12 +1,27 @@
 using UnityEngine;
 using UnityEditor;
-
+enum damager
+{
+    ACID,
+    MONSTER
+}
+enum damageType
+{
+    ACID,
+    MONSTER_MELEE,
+    SPIT
+}
 namespace Gamekit3D
 {
+    
     public class OurInspector : EditorWindow
     {
         bool myBool0 = true;
         bool myBool1 = true;
+        damager dmgr;
+        damageType dmgtp;
+        bool showAllCubes;
+        bool showHeatMap;
         // Add menu named "My Window" to the Window menu
         [MenuItem("Window/Data Inspector")]
 
@@ -23,40 +38,66 @@ namespace Gamekit3D
         }
         void OnGUI()
         {
+            GUILayout.Label(" ---------------------------------------- General Settings ---------------------------------------- ");
             if (GUILayout.Button("Download All Data"))
             {
                 Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Our_Code>().DownloadAllData();
             }
+            GUILayout.Label(" ------- Cube Settings ------- ");
             if (GUILayout.Button("Show Cubes from all Data"))
             {
                 Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Cubes>().ClearAllCubes();
                 Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Cubes>().SpawnCubes(Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Our_Code>().downloadedDeathData);
             }
-            if (GUILayout.Button("Show Cubes from Damager Acid"))
+            dmgr = (damager)EditorGUILayout.EnumPopup("Damager", dmgr);
+            if (GUILayout.Button("Show Cubes from Damager " + dmgr.ToString()))
             {
-                Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Cubes>().ClearAllCubes();
-                Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Cubes>().SpawnCubes(Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Our_Code>().downloadedDeathDataDamagerAcid);
+                switch (dmgr)
+                {
+                    case damager.ACID:
+                        Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Cubes>().ClearAllCubes();
+                        Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Cubes>().SpawnCubes(Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Our_Code>().downloadedDeathDataDamagerAcid);
+                        break;
+                    case damager.MONSTER:
+                        Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Cubes>().ClearAllCubes();
+                        Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Cubes>().SpawnCubes(Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Our_Code>().downloadedDeathDataDamagerSpit);
+                        break;
+                    default:
+                        break;
+                }
+                
             }
-            if (GUILayout.Button("Show Cubes from Damager Monster"))
+            dmgtp = (damageType)EditorGUILayout.EnumPopup("Damage Type", dmgtp);
+            if (GUILayout.Button("Show Cubes from Damage Type " + dmgtp.ToString()))
             {
-                Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Cubes>().ClearAllCubes();
-                Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Cubes>().SpawnCubes(Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Our_Code>().downloadedDeathDataDamagerSpit);
+                switch (dmgtp)
+                {
+                    case damageType.ACID:
+                        Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Cubes>().ClearAllCubes();
+                        Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Cubes>().SpawnCubes(Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Our_Code>().downloadedDeathDataDamageTypeAcid);
+                        break;
+                    case damageType.MONSTER_MELEE:
+                        Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Cubes>().ClearAllCubes();
+                        Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Cubes>().SpawnCubes(Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Our_Code>().downloadedDeathDataDamageTypeMonsterMelee);
+                        break;
+                    case damageType.SPIT:
+                        Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Cubes>().ClearAllCubes();
+                        Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Cubes>().SpawnCubes(Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Our_Code>().downloadedDeathDataDamageTypeSpit);
+                        break;
+                    default:
+                        break;
+                }
+
             }
-            if (GUILayout.Button("Show Cubes from DamageType Acid"))
-            {
-                Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Cubes>().ClearAllCubes();
-                Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Cubes>().SpawnCubes(Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Our_Code>().downloadedDeathDataDamageTypeAcid);
-            }
-            if (GUILayout.Button("Show Cubes from DamageType MonsterMelee"))
-            {
-                Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Cubes>().ClearAllCubes();
-                Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Cubes>().SpawnCubes(Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Our_Code>().downloadedDeathDataDamageTypeMonsterMelee);
-            }
-            if (GUILayout.Button("Show Cubes from DamageType Spit"))
-            {
-                Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Cubes>().ClearAllCubes();
-                Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Cubes>().SpawnCubes(Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Our_Code>().downloadedDeathDataDamageTypeMonsterMelee);
-            }
+            GUILayout.Label(" ------- Track Settings ------- ");
+            myBool0 = GUILayout.Toggle(myBool0, "Draw Track Lines");            
+                Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Our_Code>().DrawTrackLines(myBool0);
+
+            GUILayout.Label(" ------- HeatMap Settings ------- ");
+            showHeatMap = GUILayout.Toggle(showHeatMap, "Show Heat Map Cubes");
+                Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Cubes>().ShowHeatMap(showHeatMap);
+
+            GUILayout.Label(" ------- Remove Settings ------- ");
             if (GUILayout.Button("Remove Path Data"))
             {
                 Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Our_Code>().RemovePath();
@@ -68,15 +109,8 @@ namespace Gamekit3D
             if (GUILayout.Button("Remove Data From Unity"))
             {
                 Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Our_Code>().ClearAllDataFromUnity();
+                Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Cubes>().ClearAllCubes();
             }
-            myBool0 = GUILayout.Toggle(myBool0, "Draw Track Lines");            
-                Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Our_Code>().DrawTrackLines(myBool0);
-            
-                
-            myBool1 = GUILayout.Toggle(myBool1, "Heatmap");
-                Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Cubes>().ShowHeatMap(myBool1);
-
-
             //EditorGUILayout.EndToggleGroup();
         }
     }
