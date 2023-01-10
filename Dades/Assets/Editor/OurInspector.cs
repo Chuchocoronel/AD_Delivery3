@@ -38,12 +38,12 @@ namespace Gamekit3D
         }
         void OnGUI()
         {
-            GUILayout.Label(" ---------------------------------------- General Settings ---------------------------------------- ");
+            GUILayout.Label(" ----------------------------------------    General Settings    ---------------------------------------- \n");
             if (GUILayout.Button("Download All Data"))
             {
                 Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Our_Code>().DownloadAllData();
             }
-            GUILayout.Label(" ------- Cube Settings ------- ");
+            GUILayout.Label("\n\n ----------------------------------------    Cube Settings    ---------------------------------------- \n");
             if (GUILayout.Button("Show Cubes from all Data"))
             {
                 Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Cubes>().ClearAllCubes();
@@ -89,15 +89,15 @@ namespace Gamekit3D
                 }
 
             }
-            GUILayout.Label(" ------- Track Settings ------- ");
+            GUILayout.Label("\n\n ----------------------------------------    Track Settings    ---------------------------------------- \n");
             myBool0 = GUILayout.Toggle(myBool0, "Draw Track Lines");            
                 Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Our_Code>().DrawTrackLines(myBool0);
 
-            GUILayout.Label(" ------- HeatMap Settings ------- ");
+            GUILayout.Label("\n\n ----------------------------------------    HeatMap Settings    ---------------------------------------- \n");
             showHeatMap = GUILayout.Toggle(showHeatMap, "Show Heat Map Cubes");
                 Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Cubes>().ShowHeatMap(showHeatMap);
 
-            GUILayout.Label(" ------- Remove Settings ------- ");
+            GUILayout.Label("\n\n ----------------------------------------    Remove Settings    ---------------------------------------- \n");
             if (GUILayout.Button("Remove Path Data"))
             {
                 Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Our_Code>().RemovePath();
