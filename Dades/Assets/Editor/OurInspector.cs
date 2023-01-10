@@ -17,10 +17,8 @@ namespace Gamekit3D
     public class OurInspector : EditorWindow
     {
         bool myBool0 = true;
-        bool myBool1 = true;
         damager dmgr;
         damageType dmgtp;
-        bool showAllCubes;
         bool showHeatMap;
         // Add menu named "My Window" to the Window menu
         [MenuItem("Window/Data Inspector")]
