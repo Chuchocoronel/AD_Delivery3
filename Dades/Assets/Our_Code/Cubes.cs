@@ -26,7 +26,6 @@ namespace Gamekit3D
         [SerializeField] GameObject HeatmapCubePrefab;
         List<GameObject> cubesOfHeatMapList = new List<GameObject>();
 
-
         private void Start()
         {
             ourCode = GetComponent<Our_Code>();
@@ -34,8 +33,8 @@ namespace Gamekit3D
 
         public void SpawnCubes(List<DeathData> list,Gradient gradient)
         {
-            
-            for(int i = 0; i < list.Count; i++)
+
+            for (int i = 0; i < list.Count; i++)
             {
                 Vector3 pos = new Vector3(list[i].X, list[i].Y, list[i].Z);
                 GameObject go = Instantiate(deathCube, pos, this.transform.rotation, Heatmap);

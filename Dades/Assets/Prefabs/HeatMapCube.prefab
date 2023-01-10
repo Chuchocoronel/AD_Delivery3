@@ -110,15 +110,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aab2c64f244530b41ab41481aa251588, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cubeColors:
-  - {r: 1, g: 1, b: 1, a: 0.39215687}
-  - {r: 0.7430861, g: 1, b: 0, a: 0.78431374}
-  - {r: 0.8732661, g: 1, b: 0, a: 0.78431374}
-  - {r: 1, g: 0.95224696, b: 0, a: 0.78431374}
-  - {r: 1, g: 0.7345494, b: 0, a: 0.78431374}
-  - {r: 1, g: 0, b: 0, a: 0.78431374}
-  - {r: 0.5849056, g: 0, b: 0, a: 0.78431374}
-  bounds:
-    m_Center: {x: -0.4, y: 3.2, z: 28.52}
-    m_Extent: {x: 4.6145, y: 4.6145, z: 4.6145}
+  defaultColor: {r: 1, g: 1, b: 1, a: 0.39215687}
   count: 0
