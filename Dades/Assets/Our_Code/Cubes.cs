@@ -26,13 +26,13 @@ namespace Gamekit3D
         [SerializeField] GameObject HeatmapCubePrefab;
         List<GameObject> cubesOfHeatMapList = new List<GameObject>();
 
-        private bool newData = false;
+
         private void Start()
         {
             ourCode = GetComponent<Our_Code>();
         }
 
-        public void SpawnCubes(List<DeathData> list)
+        public void SpawnCubes(List<DeathData> list,Gradient gradient)
         {
             
             for(int i = 0; i < list.Count; i++)
@@ -51,9 +51,15 @@ namespace Gamekit3D
                 heatMapCubesList.Add(HeatMapCubes.transform.GetChild(i).GetComponent<heatMapCube>());
             }
 
+            int totalCount = 0;
             foreach (heatMapCube item in heatMapCubesList)
             {
-                item.Count();
+                totalCount += item.Count();
+            }
+
+            foreach (heatMapCube item in heatMapCubesList)
+            {
+                item.UpdateColor(gradient,totalCount);
             }
         }
         public void ClearAllCubes()

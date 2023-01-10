@@ -12,7 +12,7 @@ public class heatMapCube : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        UpdateColor();
+
     }
 
     // Update is called once per frame
@@ -21,7 +21,14 @@ public class heatMapCube : MonoBehaviour
 
     }
 
-    public void Count()
+    public void CleanCubes()
+    {
+        var tempMaterial = new Material(this.GetComponent<Renderer>().sharedMaterial);
+        tempMaterial.color = cubeColors[0];
+        this.GetComponent<Renderer>().sharedMaterial = tempMaterial;
+    }
+
+    public int Count()
     {
         count = 0;
         bounds = GetComponent<Renderer>().bounds;
@@ -35,22 +42,49 @@ public class heatMapCube : MonoBehaviour
                 count++;
             }
         }
-        UpdateColor();
+        return count;
     }
 
-    void UpdateColor()
+    public void UpdateColor(Gradient gradient, int totalCount)
     {
-        if (count > cubeColors.Count-1)
-            transform.GetComponent<Renderer>().material.color = cubeColors[cubeColors.Count - 1];
+
+        MaterialPropertyBlock materialPropertyBlock = new MaterialPropertyBlock();
+        if (count > 0)
+        {
+
+            materialPropertyBlock.SetColor("Gradiant", gradient.Evaluate((count*100)/totalCount));
+            var tempMaterial = new Material(this.GetComponent<Renderer>().sharedMaterial);
+            tempMaterial.color = materialPropertyBlock.GetColor("Gradiant");
+            this.GetComponent<Renderer>().sharedMaterial = tempMaterial;
+        }
         else
         {
-            transform.GetComponent<Renderer>().material.color = cubeColors[count];
+            var tempMaterial = new Material(this.GetComponent<Renderer>().sharedMaterial);
+            tempMaterial.color = cubeColors[0];
+            this.GetComponent<Renderer>().sharedMaterial = tempMaterial;
+
         }
+        
     }
 
-    public void CleanCubes()
-    {
-        transform.GetComponent<Renderer>().material.color = cubeColors[0];
-    }
+    //public void SetColor(List<GameObject> heatMapCubes)
+    //{
+    //    foreach (GameObject thisCube in heatMapCubes)
+    //    {
+    //        MaterialPropertyBlock materialPropertyBlock = new MaterialPropertyBlock();
+    //        float proximityCount = 0;
 
+            
+    //        if (proximityCount > 0)
+    //        {
+    //            materialPropertyBlock.SetColor("Gradiant", gradient.Evaluate(proximityCount / heatMapCubes.Count));
+    //        }
+    //        // Set the material color of the instance
+
+    //        var tempMaterial = new Material(thisCube.GetComponent<Renderer>().sharedMaterial);
+    //        tempMaterial.color = materialPropertyBlock.GetColor("Gradiant");
+    //        thisCube.GetComponent<Renderer>().sharedMaterial = tempMaterial;
+    //    }
+    //}
 }
+
