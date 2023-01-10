@@ -115,6 +115,7 @@ namespace Gamekit3D
         private string[] userDownloadPositions;
         private string rawresponse;
         private string rawresponseDownloadPositions;
+        public bool drawGizmos = false;
         
 
         // Start is called before the first frame update
@@ -167,10 +168,6 @@ namespace Gamekit3D
             downloadedDeathDataDamageTypeSpit.Clear();
             downloadedPositionsList.Clear();            
         }
-        public void GeneratePath()
-        {
-            GenerateTrackedPath();
-        }
         IEnumerator Wait()
         {
             canSpawnCube = false;
@@ -185,15 +182,21 @@ namespace Gamekit3D
         }
         private void OnDrawGizmos()
         {
-            Gizmos.color = Color.green;
-            if(playerTrackedPositions.Count > 0)
+            if(drawGizmos)
             {
-                for (int i = 1; i < playerTrackedPositions.Count; i++)
+                for (int i = 1; i < downloadedPositionsList.Count; i++)
                 {
-                    Gizmos.DrawLine(playerTrackedPositions[i - 1], playerTrackedPositions[i]);
+                    if (i < downloadedPositionsList.Count)
+                    {
+                        Gizmos.color = Color.red;
+                        Gizmos.DrawLine(downloadedPositionsList[i - 1], downloadedPositionsList[i]);
+                    }
                 }
-            }
-            
+            }      
+        }
+        public void DrawTrackLines(bool b)
+        {
+            drawGizmos = b;
         }
         private bool RaycastToGround()
         {
@@ -417,25 +420,6 @@ namespace Gamekit3D
         public List<Vector3> GetDownloadedPositions()
         {
             return downloadedPositionsList;
-        }
-        public void GenerateTrackedPath()
-        {
-            for(int i = 0; i < downloadedPositionsList.Count; i++)
-            {
-                Vector3 arrowForwardVector = Vector3.zero;
-                float zScale = 0;
-                if(i < downloadedPositionsList.Count)
-                {
-                    arrowForwardVector = downloadedPositionsList[i + 1] - downloadedPositionsList[i];
-                    zScale = Vector3.Distance(downloadedPositionsList[i + 1], downloadedPositionsList[i]);
-                }
-
-                GameObject go = Instantiate(trackedPositionsArrowGameObject, downloadedPositionsList[i], Quaternion.identity);
-                go.transform.localScale = new Vector3(zScale*5, zScale, zScale*14);
-                go.transform.forward = arrowForwardVector;
-
-                allTracks.Add(go);
-            }
-        }
+        }        
     }
 }

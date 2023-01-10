@@ -7,7 +7,8 @@ namespace Gamekit3D
     {
         string myString = "Hello World";
         bool groupEnabled;
-        bool myBool = true;
+        bool myBool0 = true;
+        bool myBool1 = true;
         float myFloat = 1.23f;
 
         // Add menu named "My Window" to the Window menu
@@ -29,10 +30,6 @@ namespace Gamekit3D
             if (GUILayout.Button("Download All Data"))
             {
                 Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Our_Code>().DownloadAllData();
-            }
-            if (GUILayout.Button("Generate Path"))
-            {
-                Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Our_Code>().GeneratePath();
             }
             if (GUILayout.Button("Show Cubes from all Data"))
             {
@@ -76,8 +73,12 @@ namespace Gamekit3D
             {
                 Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Our_Code>().ClearAllDataFromUnity();
             }
-            myBool = GUILayout.Toggle(myBool, "Heatmap");
-            Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Cubes>().ShowHeatMap(myBool);
+            myBool0 = GUILayout.Toggle(myBool0, "Draw Track Lines");            
+                Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Our_Code>().DrawTrackLines(myBool0);
+            
+                
+            myBool1 = GUILayout.Toggle(myBool1, "Heatmap");
+                Resources.FindObjectsOfTypeAll<Our_Code>()[0].GetComponent<Cubes>().ShowHeatMap(myBool1);
 
 
             //EditorGUILayout.EndToggleGroup();
