@@ -17,7 +17,7 @@ namespace Gamekit3D
         [SerializeField] private GameObject deathCube;
         [SerializeField] private Transform Heatmap;
         [SerializeField] private GameObject HeatMapCubes;
-        private List<heatMapCube> heatMapCubesList;
+        private List<heatMapCube> heatMapCubesList = new List<heatMapCube>();
 
         // Variables Grid
         public int gridX;

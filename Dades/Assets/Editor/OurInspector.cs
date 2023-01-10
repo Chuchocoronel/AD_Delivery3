@@ -22,9 +22,7 @@ namespace Gamekit3D
         bool showHeatMap;
         Gradient gradient = new Gradient();
         Vector2 scroll;
-        // Add menu named "My Window" to the Window menu
-        [MenuItem("Window/Data Inspector")]
-        // Add menu named "My Window" to the Window menu
+
         private void OnEnable()
         {
             GradientColorKey[] colorKeys = new GradientColorKey[3];
@@ -37,7 +35,8 @@ namespace Gamekit3D
             colorKeys[2].time = 1.0f;
             gradient.SetKeys(colorKeys, gradient.alphaKeys);
         }
-
+        // Add menu named "My Window" to the Window menu
+        [MenuItem("Window/Data Inspector")]
         // Add menu named "My Window" to the Window menu
         static void Init()
         {

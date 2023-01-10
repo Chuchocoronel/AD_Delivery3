@@ -10,7 +10,7 @@ public class heatMapCube : MonoBehaviour
 
     public void CleanCubes()
     {
-        transform.GetComponent<Renderer>().material.color = defaultColor;
+        transform.GetComponent<Renderer>().sharedMaterial.color = defaultColor;
     }
 
     public int Count()
@@ -35,11 +35,11 @@ public class heatMapCube : MonoBehaviour
 
         if (count > 0)
         {
-            transform.GetComponent<Renderer>().material.color = gradient.Evaluate(((float)count/(float)totalCount));
+            transform.GetComponent<Renderer>().sharedMaterial.color = gradient.Evaluate(((float)count/(float)totalCount));
         }
         else
         {
-            transform.GetComponent<Renderer>().material.color = defaultColor;
+            transform.GetComponent<Renderer>().sharedMaterial.color = defaultColor;
         }
         
     }
