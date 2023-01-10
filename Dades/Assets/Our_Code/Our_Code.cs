@@ -83,8 +83,8 @@ namespace Gamekit3D
         private GameObject player;
 
         // ------------------ LISTS ------------------ 
-        public List<DeathData> deathDatas = new List<DeathData>();
-        public List<HitData> hitDatas = new List<HitData>();
+        private List<DeathData> deathDatas = new List<DeathData>();
+        private List<HitData> hitDatas = new List<HitData>();
         public List<DeathData> downloadedDeathData = new List<DeathData>();
         public List<DeathData> downloadedDeathDataDamageTypeAcid = new List<DeathData>();
         public List<DeathData> downloadedDeathDataDamageTypeMonsterMelee = new List<DeathData>();
@@ -94,7 +94,6 @@ namespace Gamekit3D
         public List<DeathData> downloadedDeathDataDamagerHit = new List<DeathData>();
         public List<DeathData> downloadedDeathDataDamagerDeath = new List<DeathData>();
         public List<Vector3> downloadedPositionsList = new List<Vector3>();
-        public List<GameObject> allTracks = new List<GameObject>();
         [SerializeField] private List<Vector3> playerTrackedPositions = new List<Vector3>();
         // ------------------ LISTS ------------------ 
 
@@ -147,12 +146,7 @@ namespace Gamekit3D
         }
         public void RemovePath()
         {
-            GameObject[] aux = GameObject.FindGameObjectsWithTag("Arrow");
-            for (int i = 0; i < aux.Length; ++i)
-            {
-                DestroyImmediate(aux[i]);
-            }
-            allTracks.Clear();
+            downloadedPositionsList.Clear();
         }
         public void ClearAllDataFromUnity()
         {
@@ -224,35 +218,6 @@ namespace Gamekit3D
             form.AddField("damager", damager);
             form.AddField("type", type);
 
-            UnityWebRequest webRequest = UnityWebRequest.Post(uri, form);
-            {
-                // Request and wait for the desired page.
-                yield return webRequest.SendWebRequest();
-
-                string[] pages = uri.Split('/');
-                int page = pages.Length - 1;
-
-                switch (webRequest.result)
-                {
-                    case UnityWebRequest.Result.ConnectionError:
-                    case UnityWebRequest.Result.DataProcessingError:
-                        Debug.LogError(pages[page] + ": Error: " + webRequest.error);
-                        break;
-                    case UnityWebRequest.Result.ProtocolError:
-                        Debug.LogError(pages[page] + ": HTTP Error: " + webRequest.error);
-                        break;
-                    case UnityWebRequest.Result.Success:
-                        Debug.Log("Reached Succes!");
-
-                        break;
-                }
-            }
-        }
-        public IEnumerator ClearDataFromSQL()
-        {
-            string uri = "https://citmalumnes.upc.es/~marcrp5/ClearSql.php";
-
-            WWWForm form = new WWWForm();
             UnityWebRequest webRequest = UnityWebRequest.Post(uri, form);
             {
                 // Request and wait for the desired page.

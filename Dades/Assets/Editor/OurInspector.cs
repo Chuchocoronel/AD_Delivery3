@@ -5,12 +5,8 @@ namespace Gamekit3D
 {
     public class OurInspector : EditorWindow
     {
-        string myString = "Hello World";
-        bool groupEnabled;
         bool myBool0 = true;
         bool myBool1 = true;
-        float myFloat = 1.23f;
-
         // Add menu named "My Window" to the Window menu
         [MenuItem("Window/Data Inspector")]
 
